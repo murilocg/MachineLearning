@@ -23,14 +23,28 @@ public class FeatureNormalize {
 		return X;
 	}
 
+	public DoubleMatrix normalizeMatrix(DoubleMatrix X) {
+		for (int i = 0; i < X.rows; i++) {
+			X.putRow(i, normalizeRow(X.getRow(i)));
+		}
+		return X;
+	}
+
+	public DoubleMatrix normalizeRow(DoubleMatrix row) {
+		for (int i = 0; i < row.length; i++) {
+			row.put(i, normalizeOneValue(row.get(i), i));
+		}
+		return row;
+	}
+
 	private DoubleMatrix normalizeColumn(DoubleMatrix column, int i) {
 		for (int j = 0; j < column.length; j++) {
-			column.put(j, normalize(column.get(j), i));
+			column.put(j, normalizeOneValue(column.get(j), i));
 		}
 		return column;
 	}
 
-	public double normalize(double value, int column) {
+	public double normalizeOneValue(double value, int column) {
 		return (value - mu.get(column)) / sigma.get(column);
 	}
 

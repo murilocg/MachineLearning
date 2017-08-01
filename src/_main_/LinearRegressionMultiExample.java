@@ -2,16 +2,12 @@ package _main_;
 
 import org.jblas.DoubleMatrix;
 
-import control.FeatureNormalize;
-import control.GradientDescent;
-import control.LinearRegressionGradientDescent;
-import control.LinearRegressionNormal;
-import control.NormalEqn;
+import control.regression.LinearRegressionGradientDescent;
+import control.regression.LinearRegressionNormal;
 import entity.model.LinearRegressionModel;
-import entity.util.Hypotesis;
 import entity.util.LoadData;
 
-public class LinearRegressionMulti {
+public class LinearRegressionMultiExample {
 
 	public static void main(String[] args) {
 

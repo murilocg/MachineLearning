@@ -2,11 +2,11 @@ package _main_;
 
 import org.jblas.DoubleMatrix;
 
-import control.LinearRegressionGradientDescent;
+import control.regression.LinearRegressionGradientDescent;
 import entity.model.LinearRegressionModel;
 import entity.util.LoadData;
 
-public class LinearRegression {
+public class LinearRegressionExample {
 
 	public static void main(String[] args) {
 

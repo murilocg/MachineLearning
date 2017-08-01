@@ -1,9 +1,12 @@
-package control;
+package control.regression;
 
 import org.jblas.DoubleMatrix;
 
+import control.FeatureNormalize;
+import control.GradientDescent;
+import entity.model.Hypothesis;
 import entity.model.LinearRegressionModel;
-import entity.util.Hypotesis;
+import entity.util.HypothesisLinearRegression;
 
 public class LinearRegressionGradientDescent extends LinearRegressionModel {
 
@@ -11,11 +14,13 @@ public class LinearRegressionGradientDescent extends LinearRegressionModel {
 	private boolean normalize;
 	private double alpha;
 	private int iterations;
+	private Hypothesis hypothesis;
 
 	public LinearRegressionGradientDescent(double alpha, int iterations, boolean normalize) {
 		this.normalize = normalize;
 		this.alpha = alpha;
 		this.iterations = iterations;
+		this.hypothesis = new HypothesisLinearRegression();
 	}
 	
 	@Override
@@ -26,7 +31,7 @@ public class LinearRegressionGradientDescent extends LinearRegressionModel {
 		}
 		X = DoubleMatrix.concatHorizontally(DoubleMatrix.ones(X.rows, 1), X);
 		theta = DoubleMatrix.zeros(X.columns, 1);
-		theta = GradientDescent.compute(X, Y, theta, alpha, iterations);
+		theta = GradientDescent.compute(X, Y, theta, alpha, iterations, hypothesis);
 	}
 
 	@Override
@@ -39,7 +44,7 @@ public class LinearRegressionGradientDescent extends LinearRegressionModel {
 
 		DoubleMatrix Y = new DoubleMatrix(X.rows, 1);
 		for (int i = 0; i < X.rows; i++) {
-			Y.put(i, Hypotesis.compute(X.getRow(i), theta));
+			Y.put(i, hypothesis.compute(X.getRow(i), theta));
 		}
 		return Y;
 	}

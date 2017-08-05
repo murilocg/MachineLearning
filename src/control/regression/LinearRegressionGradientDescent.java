@@ -3,10 +3,11 @@ package control.regression;
 import org.jblas.DoubleMatrix;
 
 import control.FeatureNormalize;
-import control.GradientDescent;
+import entity.dto.ConfigGradientDescent;
 import entity.model.Hypothesis;
 import entity.model.LinearRegressionModel;
-import entity.util.HypothesisLinearRegression;
+import entity.util.gradient_descent.GradientDescent;
+import entity.util.hypoythesis.HypothesisLinearRegression;
 
 public class LinearRegressionGradientDescent extends LinearRegressionModel {
 
@@ -31,7 +32,8 @@ public class LinearRegressionGradientDescent extends LinearRegressionModel {
 		}
 		X = DoubleMatrix.concatHorizontally(DoubleMatrix.ones(X.rows, 1), X);
 		theta = DoubleMatrix.zeros(X.columns, 1);
-		theta = GradientDescent.compute(X, Y, theta, alpha, iterations, hypothesis);
+		ConfigGradientDescent config = new ConfigGradientDescent(X, Y, theta, hypothesis, alpha, iterations);
+		theta = GradientDescent.compute(config);
 	}
 
 	@Override

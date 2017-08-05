@@ -15,7 +15,7 @@ public class LogisticRegressionExample {
 		DoubleMatrix Y = dataset.getColumn(dataset.columns - 1);
 
 		System.out.println("\n\nRunning Logistic Regression with Gradient Descent....");
-		LogisticRegression model = new LogisticRegression(0.0041, 300000);
+		LogisticRegression model = new LogisticRegression(0.001, 300000);
 		model.train(X, Y);
 
 		System.out.println("\n\nPredicting Prices....");

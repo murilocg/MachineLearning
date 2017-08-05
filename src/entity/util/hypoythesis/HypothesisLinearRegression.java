@@ -1,4 +1,4 @@
-package entity.util;
+package entity.util.hypoythesis;
 
 import org.jblas.DoubleMatrix;
 

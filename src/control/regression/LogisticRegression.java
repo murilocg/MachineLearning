@@ -2,8 +2,9 @@ package control.regression;
 
 import org.jblas.DoubleMatrix;
 
-import control.GradientDescent;
-import entity.util.HypothesisLogisticRegression;
+import entity.dto.ConfigGradientDescent;
+import entity.util.gradient_descent.GradientDescent;
+import entity.util.hypoythesis.HypothesisLogisticRegression;
 
 public class LogisticRegression {
 
@@ -21,7 +22,8 @@ public class LogisticRegression {
 	public void train(DoubleMatrix X, DoubleMatrix Y) {
 		X = DoubleMatrix.concatHorizontally(DoubleMatrix.ones(X.rows, 1), X);
 		theta = DoubleMatrix.zeros(X.columns, 1);
-		theta = GradientDescent.compute(X, Y, theta, alpha, iterations, hypothesis);
+		ConfigGradientDescent config = new ConfigGradientDescent(X, Y, theta, hypothesis, alpha, iterations);
+		theta = GradientDescent.compute(config);
 	}
 
 	public DoubleMatrix predict(DoubleMatrix X) {

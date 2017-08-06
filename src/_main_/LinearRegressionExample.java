@@ -2,8 +2,8 @@ package _main_;
 
 import org.jblas.DoubleMatrix;
 
-import control.regression.LinearRegressionGradientDescent;
-import entity.model.LinearRegressionModel;
+import control.regression.LinearRegression;
+import entity.model.Regression;
 import entity.util.LoadData;
 
 public class LinearRegressionExample {
@@ -16,7 +16,7 @@ public class LinearRegressionExample {
 		DoubleMatrix Y = dataset.getColumn(1);
 		
 		System.out.println("\n\nRunning Linear Regression Gradient Descent....");
-		LinearRegressionModel model = new LinearRegressionGradientDescent(0.01, 2000, false);
+		Regression model = new LinearRegression(0.01, 2000, false);
 		model.train(X, Y);
 
 		System.out.println("\n\nPredicting Prices....");

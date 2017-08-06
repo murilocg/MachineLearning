@@ -4,26 +4,20 @@ import org.jblas.DoubleMatrix;
 
 import control.FeatureNormalize;
 import entity.dto.ConfigGradientDescent;
-import entity.model.Hypothesis;
-import entity.model.LinearRegressionModel;
+import entity.model.Regression;
 import entity.util.gradient_descent.GradientDescent;
 import entity.util.hypoythesis.HypothesisLinearRegression;
 
-public class LinearRegressionGradientDescent extends LinearRegressionModel {
+public class LinearRegression extends Regression {
 
 	private FeatureNormalize normalizer;
 	private boolean normalize;
-	private double alpha;
-	private int iterations;
-	private Hypothesis hypothesis;
 
-	public LinearRegressionGradientDescent(double alpha, int iterations, boolean normalize) {
+	public LinearRegression(double alpha, int iterations, boolean normalize) {
+		super(alpha, iterations, new HypothesisLinearRegression());
 		this.normalize = normalize;
-		this.alpha = alpha;
-		this.iterations = iterations;
-		this.hypothesis = new HypothesisLinearRegression();
 	}
-	
+
 	@Override
 	public void train(DoubleMatrix X, DoubleMatrix Y) {
 		if (normalize) {
@@ -38,12 +32,9 @@ public class LinearRegressionGradientDescent extends LinearRegressionModel {
 
 	@Override
 	public DoubleMatrix predict(DoubleMatrix X) {
-
 		if (normalize)
 			X = normalizer.normalizeMatrix(X);
-
 		X = DoubleMatrix.concatHorizontally(DoubleMatrix.ones(X.rows, 1), X);
-
 		DoubleMatrix Y = new DoubleMatrix(X.rows, 1);
 		for (int i = 0; i < X.rows; i++) {
 			Y.put(i, hypothesis.compute(X.getRow(i), theta));

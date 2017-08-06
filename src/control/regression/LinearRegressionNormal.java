@@ -3,14 +3,14 @@ package control.regression;
 import org.jblas.DoubleMatrix;
 
 import control.NormalEqn;
-import entity.model.LinearRegressionModel;
+import entity.model.Regression;
 
-public class LinearRegressionNormal extends LinearRegressionModel {
+public class LinearRegressionNormal extends Regression{
 
 	public LinearRegressionNormal() {
-		super();
+		super(0, 0, null);
 	}
-	
+
 	@Override
 	public void train(DoubleMatrix X, DoubleMatrix Y) {
 		X = DoubleMatrix.concatHorizontally(DoubleMatrix.ones(X.rows, 1), X);

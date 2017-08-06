@@ -4,7 +4,7 @@ import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 
 public class PolynomialFeatureGenerator {
-	
+
 	public static DoubleMatrix mapFeature(DoubleMatrix X1, DoubleMatrix X2, double degree) {
 		DoubleMatrix X = DoubleMatrix.ones(X1.rows, 1);
 		for (int i = 1; i <= degree; i++) {

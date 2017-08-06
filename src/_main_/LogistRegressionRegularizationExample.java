@@ -5,8 +5,10 @@ import java.text.MessageFormat;
 import org.jblas.DoubleMatrix;
 
 import control.PolynomialFeatureGenerator;
+import control.regression.LogisticRegression;
 import entity.dto.ConfigGradientDescent;
 import entity.model.Hypothesis;
+import entity.model.LogisticRegressionModel;
 import entity.util.LoadData;
 import entity.util.gradient_descent.GradientDescentRegularization;
 import entity.util.hypoythesis.HypothesisLogisticRegression;

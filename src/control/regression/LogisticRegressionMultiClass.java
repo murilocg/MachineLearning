@@ -11,10 +11,12 @@ import entity.util.hypoythesis.HypothesisLogisticRegression;
 public class LogisticRegressionMultiClass extends Regression {
 
 	private int[] classes;
+	private double lambda;
 
-	public LogisticRegressionMultiClass(double alpha, int iterations, int[] classes) {
+	public LogisticRegressionMultiClass(double alpha, int iterations, int[] classes, double lambda) {
 		super(alpha, iterations, new HypothesisLogisticRegression());
 		this.classes = classes;
+		this.lambda = lambda;
 	}
 
 	@Override
@@ -23,10 +25,9 @@ public class LogisticRegressionMultiClass extends Regression {
 		theta = DoubleMatrix.zeros(classes.length, X.columns);
 		for (int i = 0; i < classes.length; i++) {
 			int klass = classes[i];
-			DoubleMatrix bY = BinaryClass.parse(Y, klass);
-			ConfigGradientDescent config = new ConfigGradientDescent(X, bY, theta.getRow(i).transpose(), hypothesis,
-					alpha, iterations);
-			DoubleMatrix tk = GradientDescent.compute(config);
+			System.out.println("		Training a model to the Class: " + klass);
+			DoubleMatrix tk = GradientDescent.compute(new ConfigGradientDescent(X, BinaryClass.parse(Y, klass),
+					theta.getRow(i).transpose(), hypothesis, alpha, lambda, iterations));
 			theta.putRow(i, tk);
 		}
 	}
@@ -44,7 +45,7 @@ public class LogisticRegressionMultiClass extends Regression {
 
 	private DoubleMatrix predictOneItem(DoubleMatrix rowX, DoubleMatrix rowY) {
 		for (int j = 0; j < classes.length; j++) {
-			double prediction = hypothesis.compute(rowX, theta.getRow(j).transpose());
+			double prediction = hypothesis.compute(rowX, theta.getRow(j).transpose()).get(0);
 			if (prediction > rowY.get(1)) {
 				rowY.put(0, classes[j]);
 				rowY.put(1, prediction);

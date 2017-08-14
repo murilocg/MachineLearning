@@ -19,7 +19,8 @@ public class LogisticRegressionExample {
 		model.train(X, Y);
 
 		System.out.println("\n\nPredicting Prices....");
-		DoubleMatrix prediction = model.predict(new DoubleMatrix(1, 2, new double[] { 45, 85 }));
+		DoubleMatrix prediction = model
+				.predict(new DoubleMatrix(1, 2, new double[] { 60.18259938620976, 86.30855209546826 }));
 		System.out.println("For a student with scores 45 and 85, we predict an admission probability of: "
 				+ (prediction.get(0) * 100));
 	}

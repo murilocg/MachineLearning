@@ -3,56 +3,41 @@ package entity.util.gradient_descent;
 import org.jblas.DoubleMatrix;
 
 import entity.dto.ConfigGradientDescent;
+import entity.model.Hypothesis;
 
 public class GradientDescent {
 
 	public static DoubleMatrix compute(ConfigGradientDescent config) {
-		for (int i = 0; i < config.getIterations(); i++) {
-			double[] error = calculateThetaErrors(config);
-			double[] reg = calculateRegularization(config.getTheta(), config.getLambda());
-			DoubleMatrix updatedTheta = updateTheta(config, error, reg);
-			config.setTheta(updatedTheta);
-		}
-		return config.getTheta();
-	}
-
-	protected static double[] calculateThetaErrors(ConfigGradientDescent config) {
-		int length = config.getTheta().length;
-		double[] sums = new double[length];
-		for (int j = 0; j < length; j++) {
-			sums[j] = computeSum(config, j);
-		}
-		return sums;
-	}
-
-	private static double computeSum(ConfigGradientDescent config, int j) {
-		double sum = 0;
-		for (int k = 0; k < config.getY().length; k++) {
-			DoubleMatrix row = config.getX().getRow(k);
-			double h = config.getHypothesis().compute(row, config.getTheta());
-			sum += (h - config.getY().get(k)) * row.get(j);
-		}
-		return sum;
-	}
-
-	private static double[] calculateRegularization(DoubleMatrix theta, double lambda) {
-		double[] reg = new double[theta.length];
-		for (int j = 1; j < theta.length; j++) {
-			reg[j] = lambda * theta.get(j);
-		}
-		return reg;
-	}
-
-	private static DoubleMatrix updateTheta(ConfigGradientDescent config, double[] sums, double[] reg) {
+		DoubleMatrix X = config.getX();
+		DoubleMatrix Y = config.getY();
 		DoubleMatrix theta = config.getTheta();
-		for (int j = 1; j < theta.length; j++) {
-			double newTheta = computeTheta(theta.get(j), config.getAlpha(), sums[j] + reg[j], config.getY().length);
-			theta.put(j, newTheta);
+		Hypothesis hypothesis = config.getHypothesis();
+		double lambda = config.getLambda();
+		double alpha = config.getAlpha();
+		for (int i = 0; i < config.getIterations(); i++) {
+			DoubleMatrix derivateJ = partialDerivative(X, theta, Y, hypothesis);
+			DoubleMatrix reg = reg(theta, lambda, Y.length);
+			derivateJ.addi(reg);
+			derivateJ.mmuli(alpha);
+			theta.subi(derivateJ);
 		}
 		return theta;
 	}
 
-	private static double computeTheta(double theta, double alpha, double sum, int m) {
-		return theta - (alpha * sum / m);
+	private static DoubleMatrix reg(DoubleMatrix theta, double lambda, int m) {
+		DoubleMatrix r = theta.dup();
+		r.put(0, 0);
+		r.mmuli(lambda / m);
+		return r;
+	}
+
+	private static DoubleMatrix partialDerivative(DoubleMatrix X, DoubleMatrix theta, DoubleMatrix Y,
+			Hypothesis hypothesis) {
+		DoubleMatrix vetorizeComputation = hypothesis.compute(X, theta);
+		vetorizeComputation.subi(Y);
+		DoubleMatrix XT = X.transpose();
+		DoubleMatrix r = XT.mmul(vetorizeComputation);
+		r.divi(Y.length);
+		return r;
 	}
 }

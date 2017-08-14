@@ -4,6 +4,5 @@ import org.jblas.DoubleMatrix;
 
 public interface Hypothesis {
 	
-	public abstract double compute(DoubleMatrix X, DoubleMatrix theta);
-
+	public abstract DoubleMatrix compute(DoubleMatrix X, DoubleMatrix theta);
 }

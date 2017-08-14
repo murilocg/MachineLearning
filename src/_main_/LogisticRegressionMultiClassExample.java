@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import org.jblas.DoubleMatrix;
 
+import control.FeatureNormalize;
 import control.regression.LogisticRegressionMultiClass;
 import entity.util.LoadData;
 
@@ -27,17 +28,23 @@ public class LogisticRegressionMultiClassExample {
 		System.out.println("\n\n2º-Training Model...");
 		System.out.println("\n	Running Logistic Regression Multi Class....");
 		int[] classes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-		LogisticRegressionMultiClass model = new LogisticRegressionMultiClass(0.1, 2000, classes);
+		LogisticRegressionMultiClass model = new LogisticRegressionMultiClass(0.001, 2000, classes, 1);
 		model.train(X, Y);
 
 		System.out.println("\n\n3º-Predicting...");
-		double[] valueToPredict = new double[] { 0, 1, 6, 15, 12, 1, 0, 0, 0, 7, 16, 6, 6, 10, 0, 0, 0, 8, 16, 2, 0, 11,
-				2, 0, 0, 5, 16, 3, 0, 5, 7, 0, 0, 7, 13, 3, 0, 8, 7, 0, 0, 4, 12, 0, 1, 13, 5, 0, 0, 0, 14, 9, 15, 9, 0,
-				0, 0, 0, 6, 14, 7, 1, 0, 0 };
-		DoubleMatrix prediction = model.predict(new DoubleMatrix(1, 64, valueToPredict));
+		double[] valueToPredict = getValueToPredict();
+		DoubleMatrix p = new DoubleMatrix(1, valueToPredict.length, valueToPredict);
+
+		DoubleMatrix prediction = model.predict(p);
 		String msg = "In function of inputs we predict a probability of {0} that the number is  {1}";
 		msg = MessageFormat.format(msg, prediction.get(1) * 100, prediction.get(0));
 		System.out.println(msg);
+	}
+
+	private static double[] getValueToPredict() {
+		return new double[] { 0, 0, 8, 15, 16, 13, 0, 0, 0, 1, 11, 9, 11, 16, 1, 0, 0, 0, 0, 0, 7, 14, 0, 0, 0, 0, 3, 4,
+				14, 12, 2, 0, 0, 1, 16, 16, 16, 16, 10, 0, 0, 2, 12, 16, 10, 0, 0, 0, 0, 0, 2, 16, 4, 0, 0, 0, 0, 0, 9,
+				14, 0, 0, 0, 0 };
 	}
 
 	private static int[] getArray(int size) {

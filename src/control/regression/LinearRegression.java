@@ -37,7 +37,7 @@ public class LinearRegression extends Regression {
 		X = DoubleMatrix.concatHorizontally(DoubleMatrix.ones(X.rows, 1), X);
 		DoubleMatrix Y = new DoubleMatrix(X.rows, 1);
 		for (int i = 0; i < X.rows; i++) {
-			Y.put(i, hypothesis.compute(X.getRow(i), theta));
+			Y.put(i, hypothesis.compute(X.getRow(i), theta).get(0));
 		}
 		return Y;
 	}
